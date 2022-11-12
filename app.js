@@ -1,15 +1,14 @@
 const express = require("express");
+require("dotenv").config();
 const app = express();
 const userRoute = require("./modules/users/routes/users.route");
-const port = 9000;
+const port = process.env.PORT;
 const mongoose = require("mongoose");
 app.use(express.json());
 app.use(userRoute);
 app.get("/", (req, res) => res.send("Hello World ..!"));
 mongoose
-  .connect(
-    "mongodb+srv://rwan:rwan@cluster0.lezqyqx.mongodb.net/?retryWrites=true&w=majority"
-  )
+  .connect(process.env.CONNETION_STRING)
   .then((result) => {
     app.listen(port);
     console.log(`db connected on port ${port}`);

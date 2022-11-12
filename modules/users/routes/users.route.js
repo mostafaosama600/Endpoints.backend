@@ -15,6 +15,5 @@ router.post("/addUser", addNewUsers);
 router.delete("/deleteUser/:id", deleteUser);
 // getting update users done
 router.patch("/updateUser/:id", updateUser);
-console.log("first");
 
 module.exports = router;
