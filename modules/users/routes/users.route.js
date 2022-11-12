@@ -7,13 +7,13 @@ const {
   updateUser,
 } = require("../controller/user.controller");
 
+const validateRequest = require("../../../common/validateRequest");
+const { addUserSchema } = require("../joi/userValidation");
+
 router.get("/users", getAllUsers);
-// getting spescefice users
 router.get("/user/:id", getUser);
-router.post("/addUser", addNewUsers);
-// getting delete users done
+router.post("/addUser", validateRequest(addUserSchema), addNewUsers);
 router.delete("/deleteUser/:id", deleteUser);
-// getting update users done
 router.patch("/updateUser/:id", updateUser);
 
 module.exports = router;
