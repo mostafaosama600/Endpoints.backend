@@ -1,29 +1,24 @@
 const User = require("../model/user.model");
+const bcrypt = require("bcrypt");
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({});
   res.json({ message: "All users", data: users });
 };
 
+// new way
 const addNewUsers = async (req, res) => {
   let { name, email, age, password } = req.body;
-  let newUser = new User({ name, email, age, password });
-
-  // way number 1
   try {
-    await newUser.save();
-    res.json({ message: "register success" });
+    bcrypt.hash(password, 7, async function (err, hash) {
+      if (err) throw err;
+      const newUser = new User({ name, email, age, password });
+      const user = await newUser.save();
+      res.json({ message: "register success", user });
+    });
   } catch (error) {
     res.json({ message: "error", error });
   }
-
-  // way number 2
-  // try {
-  //   await User.insertMany({ name, email, age, password });
-  //   res.json({ message: "register success" });
-  // } catch (error) {
-  //   res.json({ message: "error", error });
-  // }
 };
 
 // getting spescefice users

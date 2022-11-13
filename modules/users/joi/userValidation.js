@@ -11,6 +11,8 @@ module.exports = {
         email: Joi.string().required().email().messages({
           "email.empty": "sorry email is required yo BIG ASS again",
         }),
+        password: Joi.string().required(),
+        age: Joi.number(),
       }),
   },
 };
