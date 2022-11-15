@@ -1,21 +1,59 @@
 const User = require("../model/user.model");
 const bcrypt = require("bcrypt");
+const { StatusCodes } = require("http-status-codes");
+const jwt = require("jsonwebtoken");
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).select("-password");
   res.json({ message: "All users", data: users });
 };
 
 // new way
-const addNewUsers = async (req, res) => {
+const sign_up = async (req, res) => {
   let { name, email, age, password } = req.body;
   try {
-    bcrypt.hash(password, 7, async function (err, hash) {
-      if (err) throw err;
+    const users = User.findOne({ email });
+    if (users) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        message: "email is already existed",
+      });
+    } else {
       const newUser = new User({ name, email, age, password });
       const user = await newUser.save();
       res.json({ message: "register success", user });
-    });
+    }
+  } catch (error) {
+    res.json({ message: "error", error });
+  }
+};
+const sign_in = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        message: "invalid email",
+      });
+      res.json({ message: "invalid email" });
+    } else {
+      const match = await bcrypt.compare(password, user.password);
+      if (match) {
+        const token = jwt.sign({ name: "ali" }, "shhhhh");
+
+        res.status(StatusCodes.OK).json({
+          token,
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+          },
+        });
+      } else {
+        res.status(StatusCodes.BAD_REQUEST).json({
+          message: "password is not correct",
+        });
+      }
+    }
   } catch (error) {
     res.json({ message: "error", error });
   }
@@ -55,8 +93,9 @@ const updateUser = async (req, res) => {
 
 module.exports = {
   getAllUsers,
-  addNewUsers,
+  sign_up,
   getUser,
   deleteUser,
   updateUser,
+  sign_in,
 };

@@ -1,18 +1,20 @@
 const router = require("express").Router();
 const {
   getAllUsers,
-  addNewUsers,
+  sign_up,
   getUser,
   deleteUser,
   updateUser,
+  sign_in,
 } = require("../controller/user.controller");
 
 const validateRequest = require("../../../common/validateRequest");
-const { addUserSchema } = require("../joi/userValidation");
+const { addUserSchema, signInSchema } = require("../joi/userValidation");
 
 router.get("/users", getAllUsers);
 router.get("/user/:id", getUser);
-router.post("/addUser", validateRequest(addUserSchema), addNewUsers);
+router.post("/addUser", validateRequest(addUserSchema), sign_up);
+router.post("/signin", validateRequest(signInSchema), sign_in);
 router.delete("/deleteUser/:id", deleteUser);
 router.patch("/updateUser/:id", updateUser);
 

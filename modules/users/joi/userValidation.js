@@ -2,17 +2,17 @@ const Joi = require("joi");
 
 module.exports = {
   addUserSchema: {
-    body: Joi.object()
-      .required()
-      .keys({
-        name: Joi.string().required().messages({
-          "string.empty": "sorry name is required yo BIG ASS",
-        }),
-        email: Joi.string().required().email().messages({
-          "email.empty": "sorry email is required yo BIG ASS again",
-        }),
-        password: Joi.string().required(),
-        age: Joi.number(),
-      }),
+    body: Joi.object().required().keys({
+      name: Joi.string().required(),
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+      age: Joi.number(),
+    }),
+  },
+  signInSchema: {
+    body: Joi.object().required().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
   },
 };
