@@ -8,7 +8,7 @@ const getAllUsers = async (req, res) => {
     const users = await User.find({}).select("-password");
     res.json({ message: "All users", data: users });
   } else {
-    res.status(StatusCodes.UNAUTHORIZED).json({ message: "UNAUTHORIZED" });
+    res.status(StatusCodes.UNAUTHORIZED).json({ message: "Unauthorized" });
   }
 };
 
