@@ -4,13 +4,16 @@ const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({}).select("-password");
-  res.json({ message: "All users", data: users });
+  if (req.user.role == "admin") {
+    const users = await User.find({}).select("-password");
+    res.json({ message: "All users", data: users });
+  } else {
+    res.status(StatusCodes.UNAUTHORIZED).json({ message: "UNAUTHORIZED" });
+  }
 };
 
-// new way
 const sign_up = async (req, res) => {
-  let { name, email, age, password } = req.body;
+  let { name, email, age, password, role } = req.body;
   try {
     const users = User.findOne({ email });
     if (users) {
@@ -18,7 +21,7 @@ const sign_up = async (req, res) => {
         message: "email is already existed",
       });
     } else {
-      const newUser = new User({ name, email, age, password });
+      const newUser = new User({ name, email, age, password, role });
       const user = await newUser.save();
       res.json({ message: "register success", user });
     }

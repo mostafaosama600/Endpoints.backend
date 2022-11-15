@@ -7,11 +7,11 @@ const {
   updateUser,
   sign_in,
 } = require("../controller/user.controller");
-
 const validateRequest = require("../../../common/validateRequest");
 const { addUserSchema, signInSchema } = require("../joi/userValidation");
+const isAuthoraized = require("../../../common/isAuthoraized");
 
-router.get("/users", getAllUsers);
+router.get("/users", isAuthoraized(), getAllUsers);
 router.get("/user/:id", getUser);
 router.post("/addUser", validateRequest(addUserSchema), sign_up);
 router.post("/signin", validateRequest(signInSchema), sign_in);
