@@ -7,6 +7,7 @@ module.exports = {
       email: Joi.string().required().email(),
       password: Joi.string().required(),
       age: Joi.number(),
+      role: Joi.string().required(),
     }),
   },
   signInSchema: {

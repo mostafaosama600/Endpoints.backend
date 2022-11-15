@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true },
     password: { type: String },
     age: { type: Number, min: [6, "err min"] },
-    role: { type: Number },
+    role: { type: String },
     verified: { type: Boolean, default: false },
   },
   {
