@@ -10,8 +10,9 @@ const {
 const validateRequest = require("../../../common/validateRequest");
 const { addUserSchema, signInSchema } = require("../joi/userValidation");
 const isAuthoraized = require("../../../common/isAuthoraized");
+const { GET_ALL_USERS } = require("../endpoints");
 
-router.get("/users", isAuthoraized(), getAllUsers);
+router.get("/users", isAuthoraized(GET_ALL_USERS), getAllUsers);
 router.get("/user/:id", getUser);
 router.post("/addUser", validateRequest(addUserSchema), sign_up);
 router.post("/signin", validateRequest(signInSchema), sign_in);
