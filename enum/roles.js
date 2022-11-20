@@ -1,5 +1,5 @@
-// 2
-const roles = Object.freeze({
+// 2 don't change thissss freeze
+roles = Object.freeze({
   ADMIN: "admin",
   USER: "user",
 });
